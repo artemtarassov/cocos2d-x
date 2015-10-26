@@ -627,6 +627,7 @@ void Label::setMaxLineWidth(float maxLineWidth)
         _maxLineWidth = maxLineWidth;
         _contentDirty = true;
     }
+    trimLabel();
 }
 
 void Label::setDimensions(float width, float height)
