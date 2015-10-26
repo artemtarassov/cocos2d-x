@@ -263,7 +263,16 @@ void LabelTTF::setFlippedY(bool flippedY)
         _renderLabel->setScaleY(1.0f);
     }
 }
+void LabelTTF::setMaxLineWidth(float w)
+{
+    _renderLabel->setMaxLineWidth(w);
+}
 
+void LabelTTF::setContentSize(const Size& contentSize)
+{
+    Node::setContentSize(contentSize);
+    _renderLabel->setContentSize(contentSize);
+}
 void LabelTTF::visit(Renderer *renderer, const Mat4 &parentTransform, uint32_t parentFlags)
 {
     if (_contentDirty)

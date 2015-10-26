@@ -261,6 +261,14 @@ void EditBox::setPlaceholderFont(const char* pFontName, int fontSize)
         }
     }
 }
+    
+void EditBox::setMaxLineWidth(float w)
+{
+    if (_editBoxImpl != nullptr)
+    {
+        _editBoxImpl->setMaxLineWidth(w);
+    }
+}
 
 void EditBox::setPlaceholderFontName(const char* pFontName)
 {

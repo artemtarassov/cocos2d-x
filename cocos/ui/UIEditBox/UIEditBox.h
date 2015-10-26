@@ -379,7 +379,10 @@ namespace ui {
          * @param inputMode One of the EditBox::InputMode constants.
          */
         void setInputMode(InputMode inputMode);
-            
+        
+        
+        void setMaxLineWidth(float w);
+        
         /**
          * Sets the maximum input length of the edit box.
          * Setting this value enables multiline input mode by default.
@@ -484,7 +487,7 @@ namespace ui {
             
         Color4B _colText;
         Color4B _colPlaceHolder;
-            
+        
         int   _maxLength;
         float _adjustHeight;
 #if CC_ENABLE_SCRIPT_BINDING

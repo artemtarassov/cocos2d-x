@@ -152,7 +152,7 @@ public:
     virtual void setFlippedY(bool flippedY);
 
     virtual Rect getBoundingBox() const override;
-
+    virtual void setContentSize(const Size& contentSize) override;
     /**
      * @js NA
      * @lua NA
@@ -160,6 +160,8 @@ public:
     virtual std::string getDescription() const override;
     virtual void visit(Renderer *renderer, const Mat4 &parentTransform, uint32_t parentFlags) override;
     virtual const Size& getContentSize() const override;
+    void setMaxLineWidth(float w);
+    
 protected:
     Label*    _renderLabel;
     bool _contentDirty;

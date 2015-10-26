@@ -270,6 +270,12 @@ void EditBoxImplCommon::onEnter(void)
         setInactiveText(pText);
     }
 }
+    
+void EditBoxImplCommon::setMaxLineWidth(float w)
+{
+    _label->setMaxLineWidth(w);
+    _labelPlaceHolder->setMaxLineWidth(w);
+}
 
 void EditBoxImplCommon::openKeyboard()
 {

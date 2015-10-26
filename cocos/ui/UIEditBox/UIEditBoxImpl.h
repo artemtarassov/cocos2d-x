@@ -84,11 +84,13 @@ namespace cocos2d {
              * @lua NA
              */
             virtual void onEnter(void) = 0;
-            
+       
             
             void setDelegate(EditBoxDelegate* pDelegate) { _delegate = pDelegate; };
             EditBoxDelegate* getDelegate() { return _delegate; };
             EditBox* getEditBox() { return _editBox; };
+            
+            virtual void setMaxLineWidth(float w) = 0;
         protected:
             EditBoxDelegate* _delegate;
             EditBox* _editBox;

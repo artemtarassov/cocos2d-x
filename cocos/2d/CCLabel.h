@@ -423,6 +423,9 @@ public:
      */
     void setAdditionalKerning(float space);
 
+    
+    virtual void setContentSize(const Size& contentSize) override;
+    
     /**
      * Returns the additional kerning of the Label.
      *
@@ -611,6 +614,8 @@ protected:
     DrawNode* _debugDrawNode;
 #endif
 private:
+    void trimLabel();
+    
     CC_DISALLOW_COPY_AND_ASSIGN(Label);
 };
 

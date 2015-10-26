@@ -595,6 +595,7 @@ bool Label::setBMFontFilePath(const std::string& bmfontFilePath, const Vec2& ima
 
 void Label::setString(const std::string& text)
 {
+    //text=std::string("text");
     if (text.compare(_utf8Text))
     {
         _utf8Text = text;
@@ -658,6 +659,7 @@ void Label::updateLabelLetters()
         Rect uvRect;
         LabelLetter* letterSprite;
         int letterIndex;
+        //float maxWidth=50;
 
         for (auto it = _letters.begin(); it != _letters.end();)
         {
@@ -677,6 +679,15 @@ void Label::updateLabelLetters()
                 uvRect.size.width = letterDef.width;
                 uvRect.origin.x = letterDef.U;
                 uvRect.origin.y = letterDef.V;
+                
+                auto px = letterInfo.positionX + letterDef.width / 2 + _linesOffsetX[letterInfo.lineIndex];
+                auto py = letterInfo.positionY - letterDef.height / 2 + _letterOffsetY;
+                
+                /*if (px>maxWidth) {
+                    Node::removeChild(letterSprite, true);
+                    it = _letters.erase(it);
+                    break;
+                }*/
 
                 letterSprite->setTexture(_fontAtlas->getTexture(letterDef.textureID));
                 if (letterDef.width <= 0.f || letterDef.height <= 0.f)
@@ -690,9 +701,11 @@ void Label::updateLabelLetters()
                     letterSprite->setAtlasIndex(_lettersInfo[letterIndex].atlasIndex);
                 }
 
-                auto px = letterInfo.positionX + letterDef.width / 2 + _linesOffsetX[letterInfo.lineIndex];
-                auto py = letterInfo.positionY - letterDef.height / 2 + _letterOffsetY;
                 letterSprite->setPosition(px, py);
+                
+                if (px>50) {
+                    letterSprite->setVisible(false);
+                }
 
                 ++it;
             }
@@ -973,6 +986,28 @@ void Label::disableEffect(LabelEffect effect)
     }
 }
 
+void Label::setContentSize(const Size& contentSize)
+{
+    Node::setContentSize(contentSize);
+    this->trimLabel();
+}
+
+void Label::trimLabel()
+{
+    if (_textSprite) {
+        Size txtSize=_textSprite->getTexture()->getContentSize();
+        float w=txtSize.width;
+        if (_maxLineWidth>0) {
+            w=fminf(_maxLineWidth, txtSize.width);
+        }
+        if (w>0) {
+            _textSprite->setTextureRect(Rect(0, 0, w, txtSize.height));
+            _textSprite->setContentSize(Size(w, txtSize.height));
+        }
+    }
+
+}
+
 void Label::createSpriteForSystemFont(const FontDefinition& fontDef)
 {
     _currentLabelType = LabelType::STRING_TEXTURE;
@@ -985,7 +1020,12 @@ void Label::createSpriteForSystemFont(const FontDefinition& fontDef)
     _textSprite->setCameraMask(getCameraMask());
     _textSprite->setGlobalZOrder(getGlobalZOrder());
     _textSprite->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
-    this->setContentSize(_textSprite->getContentSize());
+    
+    this->trimLabel();
+    
+    Node::setContentSize(_textSprite->getContentSize());
+    
+   // this->setContentSize(_textSprite->getContentSize());
     texture->release();
     if (_blendFuncDirty)
     {

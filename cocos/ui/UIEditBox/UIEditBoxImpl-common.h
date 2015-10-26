@@ -113,6 +113,8 @@ public:
     virtual void setNativeMaxLength(int maxLength) {};
 
 
+    virtual void setMaxLineWidth(float w);
+    
 private:
 	void			initInactiveLabels(const Size& size);
 	void			setInactiveText(const char* pText);
