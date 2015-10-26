@@ -835,6 +835,10 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
     }
 }
 
+-(void)setOriginalRect:(CGRect)rect
+{
+    originalRect_=rect;
+}
 UIInterfaceOrientation getFixedOrientation(UIInterfaceOrientation statusBarOrientation)
 {
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)

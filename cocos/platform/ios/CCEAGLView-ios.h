@@ -142,6 +142,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 @property(nonatomic,readwrite) BOOL multiSampling;
 
+-(void)setOriginalRect:(CGRect)rect;
 
 /** CCEAGLView uses double-buffer. This method swaps the buffers */
 -(void) swapBuffers;
