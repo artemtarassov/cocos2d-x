@@ -22,12 +22,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#include "cocostudio/CCActionNode.h"
-#include "cocostudio/CCActionFrameEasing.h"
+#include "editor-support/cocostudio/CCActionNode.h"
+#include "editor-support/cocostudio/CCActionFrameEasing.h"
 #include "ui/UIWidget.h"
 #include "ui/UIHelper.h"
-#include "cocostudio/CocoLoader.h"
+#include "ui/UILayout.h"
+#include "editor-support/cocostudio/CocoLoader.h"
 #include "base/ccUtils.h"
+#include "editor-support/cocostudio/CCActionManagerEx.h"
+
 
 using namespace cocos2d;
 using namespace ui;
@@ -62,6 +65,8 @@ ActionNode::~ActionNode()
         CC_SAFE_RELEASE_NULL(_action);
         CC_SAFE_RELEASE_NULL(_actionSpawn);
     }
+    
+    CC_SAFE_RELEASE(_object);
 
     for (auto object : _frameArray)
     {
@@ -73,7 +78,14 @@ ActionNode::~ActionNode()
 
 void ActionNode::initWithDictionary(const rapidjson::Value& dic, Ref* root)
 {
+    Widget * rw = dynamic_cast<Widget *>(root);
+    if (nullptr == rw)
+        return;
+
     setActionTag(DICTOOL->getIntValue_json(dic, "ActionTag"));
+    Widget* node = Helper::seekActionWidgetByActionTag(rw, getActionTag());
+    bool positionOffset = node && (nullptr == (dynamic_cast<Layout *>(node)));
+
     int actionFrameCount = DICTOOL->getArrayCount_json(dic, "actionframelist");
     for (int i=0; i<actionFrameCount; i++)
     {
@@ -97,6 +109,12 @@ void ActionNode::initWithDictionary(const rapidjson::Value& dic, Ref* root)
         {
             float positionX = DICTOOL->getFloatValue_json(actionFrameDic, "positionx");
             float positionY = DICTOOL->getFloatValue_json(actionFrameDic, "positiony");
+            if (positionOffset && (nullptr != node->getParent()) && ActionManagerEx::getInstance()->getStudioVersionNumber() < 1600)
+            {
+                Vec2 AnchorPointIn = node->getParent()->getAnchorPointInPoints();
+                positionX += AnchorPointIn.x;
+                positionY += AnchorPointIn.y;
+            }
             ActionMoveFrame* actionFrame = new (std::nothrow) ActionMoveFrame();
             actionFrame->setFrameIndex(frameInex);
             actionFrame->setEasingType(frameTweenType);
@@ -120,7 +138,7 @@ void ActionNode::initWithDictionary(const rapidjson::Value& dic, Ref* root)
             actionFrame->setScaleY(scaleY);
             auto cActionArray = _frameArray.at((int)kKeyframeScale);
             cActionArray->pushBack(actionFrame);
-            actionFrame->release();			
+            actionFrame->release();             
         }
 
         bool existRotation = DICTOOL->checkObjectExist_json(actionFrameDic,"rotation");
@@ -349,7 +367,9 @@ int ActionNode::getActionTag()
 
 void ActionNode::setObject(Ref* node)
 {
+    CC_SAFE_RELEASE(_object);
     _object = node;
+    CC_SAFE_RETAIN(_object);
 }
 
 Ref*  ActionNode::getObject()
@@ -619,7 +639,7 @@ void ActionNode::easingToFrame(float duration,float delayTime,ActionFrame* srcFr
     if (cAction == nullptr || cNode == nullptr)
     {
         return;
-    }	
+    }   
     cAction->startWithTarget(cNode);
     cAction->update(delayTime);
 }

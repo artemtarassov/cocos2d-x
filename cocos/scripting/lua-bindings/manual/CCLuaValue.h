@@ -171,7 +171,7 @@ public:
     
     
     /**
-     * Default constuctor of LuaValue.
+     * Default constructor of LuaValue.
      * Set the default value for _type(LuaValueTypeInt) and _ccobjectType(nullptr),and init the _field.
      */
     LuaValue(void)
@@ -201,7 +201,7 @@ public:
      * 
      * @return the type of LuaValue object.
      */
-    const LuaValueType getType(void) const {
+    LuaValueType getType() const {
         return _type;
     }
     

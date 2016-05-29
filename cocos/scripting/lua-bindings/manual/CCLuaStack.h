@@ -30,8 +30,9 @@ extern "C" {
 #include "lua.h"
 }
 
-#include "cocos2d.h"
-#include "CCLuaValue.h"
+#include "deprecated/CCArray.h"
+
+#include "scripting/lua-bindings/manual/CCLuaValue.h"
 
 /**
  * @addtogroup lua
@@ -87,10 +88,10 @@ public:
     
     /**
      * Reload script code corresponding to moduleFileName.
-     * If value of package["loaded"][moduleFileName] is existed, it would set the vaule nil.Then,it calls executeString function.
+     * If value of package["loaded"][moduleFileName] is existed, it would set the value nil.Then,it calls executeString function.
      *
      * @param moduleFileName String object holding the filename of the script file that is to be executed.
-     * @return 0 if the string is excuted correctly or other if the string is excuted wrongly.
+     * @return 0 if the string is executed correctly or other if the string is executed wrongly.
      */
     virtual int reload(const char* moduleFileName);
     
@@ -108,14 +109,14 @@ public:
     /**
      * Remove Lua function reference by nHandler by setting toluafix_refid_function_mapping[nHandle] nil.
      *
-     * @param nHandler the function reference index to find the correspoinding Lua function pointer.
+     * @param nHandler the function reference index to find the corresponding Lua function pointer.
      */
     virtual void removeScriptHandler(int nHandler);
     
     /**
      * Reallocate Lua function reference index to the Lua function pointer to add reference.
      *
-     * @param nHandler the function reference index to find the correspoinding Lua function pointer.
+     * @param nHandler the function reference index to find the corresponding Lua function pointer.
      */
     virtual int reallocateScriptHandler(int nHandler);
     
@@ -150,7 +151,7 @@ public:
     virtual void clean(void);
     
     /**
-     * Pushes a integer number with value intVaule onto the stack.
+     * Pushes a integer number with value intValue onto the stack.
      * 
      * @param intValue a integer number.
      */
@@ -222,7 +223,7 @@ public:
     /**
      * Pushes a lua table onto the stack.
      * The key of table is the key of LuaValueDict which is std::map.
-     * The value of table is according to the the type of LuaValue of LuaValueDict by calling pushLuaValue,@see pushLuaValue.
+     * The value of table is according to the type of LuaValue of LuaValueDict by calling pushLuaValue,@see pushLuaValue.
      *
      * @param dict a LuaValueDict object.
      */
@@ -231,7 +232,7 @@ public:
     /**
      * Pushes a lua array table onto the stack.
      * The index of array table is begin at 1.
-     * The value of array table is according to the the type of LuaValue of LuaValueDict by calling pushLuaValue,@see pushLuaValue.
+     * The value of array table is according to the type of LuaValue of LuaValueDict by calling pushLuaValue,@see pushLuaValue.
      */
     virtual void pushLuaValueArray(const LuaValueArray& array);
     
