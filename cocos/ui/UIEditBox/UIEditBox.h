@@ -244,6 +244,8 @@ namespace ui {
          * @lua NA
          */
         void setDelegate(EditBoxDelegate* delegate);
+        
+        void setMaxLineWidth(int n);
 
         /**
          * @js NA

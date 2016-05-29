@@ -178,6 +178,10 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
     
     return self;
 }
+- (void) setOriginalRect:(CGRect)rect
+{
+    originalRect_=rect;
+}
 
 - (void)didMoveToWindow;
 {

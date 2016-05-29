@@ -321,6 +321,14 @@ void EditBox::setInputMode(EditBox::InputMode inputMode)
     }
 }
 
+void EditBox::setMaxLineWidth(int n)
+{
+    if (_editBoxImpl != nullptr)
+    {
+        //_editBoxImpl->setContentSize(Size(n,0));
+    }
+}
+    
 void EditBox::setMaxLength(int maxLength)
 {
     _maxLength = maxLength;
